@@ -14,20 +14,19 @@ LinkedList& LinkedList::operator=(LinkedList rhs)
 
 LinkedList& LinkedList::operator=(LinkedList&& rhs)
 {
-      clear();
-      swap(*this, rhs);
-      return *this;
+    clear();
+    swap(*this, rhs);
+    return *this;
 }
 
 bool LinkedList::operator==(const LinkedList& other) const
 {
-    // TODO
     if (this->size() == other.size())
-   {
-    Node* current = other.first;
-    Node* current1 = this->first;
-    bool flag=true;
-    while (current)
+    {
+        Node* current = other.first;
+        Node* current1 = this->first;
+        bool flag=true;
+        while (current)
         {
             if (current1->value != current->value)
             {
@@ -37,15 +36,15 @@ bool LinkedList::operator==(const LinkedList& other) const
             current = current->next;
             current1 = current1->next;
         }
-    return flag;
-   }
+        return flag;
+    }
 
 }
 
 bool LinkedList::operator!=(const LinkedList& other) const
 {
-     // TODO
-   return !(*this == other);
+    // TODO
+    return !(*this == other);
 }
 
 
@@ -72,7 +71,7 @@ void LinkedList::pop_back()
 
 void LinkedList::pop_front()
 {
-    erase(first);// TODO
+    erase(first);
 }
 
 LinkedList::Node* LinkedList::insert_after(LinkedList::Node* after)
@@ -134,7 +133,7 @@ void swap(LinkedList& left, LinkedList& right)
 
 LinkedList::LinkedList()
     :first { nullptr }, last { nullptr }, size_ { 0 }
-// TODO
+
 {}
 
 
@@ -150,7 +149,7 @@ LinkedList::LinkedList(const std::initializer_list<Data> values) :
 }
 
 LinkedList::LinkedList(const LinkedList& source)
-:LinkedList() //copy
+    :LinkedList() //copy
 {
 
     Node* current = source.first;
@@ -181,7 +180,7 @@ LinkedList::~LinkedList()
 size_t LinkedList::size() const
 {
     return LinkedList::size_;
-    // TODO
+
 }
 
 Data& LinkedList::value_at(size_t index)
@@ -204,7 +203,8 @@ Data& LinkedList::value_at(size_t index)
 }
 
 void LinkedList::remove_at(size_t index)
-{   Node* node = (*this).node_at(index);
+{
+    Node* node = (*this).node_at(index);
     if (node->next) node->next->previous=node->previous;
     else last=node->previous;
     if (node->previous) node->previous->next=node->next;
@@ -227,12 +227,13 @@ void LinkedList::insert_before(size_t index, const Data& value)
     }
     if (where-> previous == nullptr)
     {
-      first=node;
+        first=node;
     }
 
     where->previous = node;
     ++size_;
 }
+
 
 void LinkedList::insert_after(size_t index, const Data& value)
 {
@@ -247,11 +248,12 @@ void LinkedList::insert_after(size_t index, const Data& value)
     }
     if (where-> next == nullptr)
     {
-      last=node;
+        last=node;
     }
 
     where->next = node;
     ++size_;
+
 }
 
 LinkedList::Node* LinkedList::node_at(size_t index)

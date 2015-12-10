@@ -44,7 +44,7 @@ public:
     bool operator!=(const LinkedList& other) const;
 
 private:
-    // TODO: нужно самосто€тельно определить структуру узла Node.
+
     struct Node
     {
         double value;
@@ -72,5 +72,5 @@ private:
     Node* last;
     size_t size_;
 
-    // TODO: нужно объ€вить данные-члены (пол€) LinkedList.
+
 };
