@@ -35,7 +35,6 @@
 		<Unit filename="LinkedList.cpp" />
 		<Unit filename="LinkedList.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="sdt.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

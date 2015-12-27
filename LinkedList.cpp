@@ -5,6 +5,8 @@
 
 #include "LinkedList.h"
 
+using std::swap;  // Чтобы использовать swap() без std::
+
 LinkedList& LinkedList::operator=(LinkedList rhs)
 {
     swap(*this, rhs);
@@ -38,12 +40,12 @@ bool LinkedList::operator==(const LinkedList& other) const
         }
         return flag;
     }
+    else throw std::logic_error("Not equal size of data!");
 
 }
 
 bool LinkedList::operator!=(const LinkedList& other) const
 {
-    // TODO
     return !(*this == other);
 }
 
@@ -56,10 +58,16 @@ void LinkedList:: clear()
 }
 void LinkedList::erase(const Node* node)
 {
-    if (node->next) node->next->previous=node->previous;
-    else last=node->previous;
-    if (node->previous) node->previous->next=node->next;
-    else first=node->next;
+    //лекция 7 стр 8
+    if (node->next)
+        node->next->previous=node->previous;
+    else
+        last=node->previous;
+
+    if (node->previous)
+        node->previous->next=node->next;
+    else
+        first=node->next;
     delete node;
     --size_;
 }
@@ -76,19 +84,18 @@ void LinkedList::pop_front()
 
 LinkedList::Node* LinkedList::insert_after(LinkedList::Node* after)
 {
-    // TODO
     return nullptr;
 }
 
 
 LinkedList::Node* LinkedList::insert_before(LinkedList::Node* before)
 {
-    // TODO
     return nullptr;
 }
 
 void LinkedList::push_back(const Data& value)
 {
+    // аналогично push_front
     Node* node = new Node;
     node->value = value;
     node->previous = last;
@@ -107,6 +114,7 @@ void LinkedList::push_back(const Data& value)
 
 void LinkedList::push_front(const Data& value)
 {
+    // лекция 7 стр 8
     Node* node = new Node;
     node->value = value;
     node->previous = nullptr;
@@ -126,6 +134,9 @@ void LinkedList::push_front(const Data& value)
 
 void swap(LinkedList& left, LinkedList& right)
 {
+    // HINT: Функция std::swap() меняет значения простых типов.
+	// вначале прописано using std::swap; Чтобы использовать swap() без std::
+	//лекция 8 стр 5
     std::swap(right.first,left.first);
     std::swap(right.last,left.last);
     std::swap(right.size_,left.size_);
@@ -149,9 +160,9 @@ LinkedList::LinkedList(const std::initializer_list<Data> values) :
 }
 
 LinkedList::LinkedList(const LinkedList& source)
-    :LinkedList() //copy
+    :LinkedList() ////иницилизация списка пустым, чтобы можно было вызвать push_back()
 {
-
+    //лекция 8 стр 3
     Node* current = source.first;
     while(current)
     {
@@ -163,6 +174,7 @@ LinkedList::LinkedList(const LinkedList& source)
 LinkedList::LinkedList(LinkedList&& source) //moving
     : LinkedList()
 {
+    //swap(*this, source);
     first = source.first;
     last = source.last;
     size_ = source.size_;
@@ -183,11 +195,12 @@ size_t LinkedList::size() const
 
 }
 
-Data& LinkedList::value_at(size_t index)
+Data& LinkedList::value_at(size_t index) //добавить в
 {
+    //поиск узла и добавление
     Node* current = first;
     size_t current_index = 0;
-    if (index>size_) throw std::out_of_range("Invalid index!");
+    if (index>=size_) throw std::out_of_range("Invalid index!");
     else
     {
         while (current)
@@ -204,20 +217,16 @@ Data& LinkedList::value_at(size_t index)
 
 void LinkedList::remove_at(size_t index)
 {
-    Node* node = (*this).node_at(index);
-    if (node->next) node->next->previous=node->previous;
-    else last=node->previous;
-    if (node->previous) node->previous->next=node->next;
-    else first=node->next;
-    delete node;
-    --size_;
+    Node* node = (*this).node_at(index); //поиск узла
+    erase(node); //удаление
 }
 
 
-void LinkedList::insert_before(size_t index, const Data& value)
+void LinkedList::insert_before(size_t index, const Data& value) // вставить до
 {
+    Node* where = (*this).node_at(index); //поиск узла
+    //аналогично push_front
     Node* node = new Node;
-    Node* where = (*this).node_at(index);
     node->value = value;
     node->previous = where->previous;
     node->next = where;
@@ -235,10 +244,11 @@ void LinkedList::insert_before(size_t index, const Data& value)
 }
 
 
-void LinkedList::insert_after(size_t index, const Data& value)
+void LinkedList::insert_after(size_t index, const Data& value) // встатвить после
 {
+    Node* where = (*this).node_at(index); //поиск узла
+	//аналогично push_back
     Node* node = new Node;
-    Node* where = (*this).node_at(index);
     node->value = value;
     node->next = where->next;
     node->previous = where;
@@ -258,6 +268,7 @@ void LinkedList::insert_after(size_t index, const Data& value)
 
 LinkedList::Node* LinkedList::node_at(size_t index)
 {
+    // лекция 7 стр 9
     Node* current = first;
     size_t current_index = 0;
     if (index>=LinkedList::size_) throw std::out_of_range("Invalid index!");
@@ -277,6 +288,7 @@ LinkedList::Node* LinkedList::node_at(size_t index)
 
 std::ostream& operator<<(std::ostream& output, const LinkedList& xs)
 {
+    // лекция 7 стр 7
     LinkedList::Node* current = xs.first;
     if (xs.size()==0) output<<"[]";
     else

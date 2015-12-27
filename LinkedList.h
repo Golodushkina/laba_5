@@ -71,6 +71,4 @@ private:
     Node* first;
     Node* last;
     size_t size_;
-
-
 };
